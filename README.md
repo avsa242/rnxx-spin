@@ -19,7 +19,9 @@ P1/SPIN1:
 
 
 P2/SPIN2:
-* ~~p2-spin-standard-library~~ _(not implemented yet)_
+* p2-spin-standard-library
+* com.serial.terminal.ansi.spin2, com.serial.spin2 (provided by the p2-spin-standard-library)
+
 
 ## Compiler Compatibility
 
@@ -27,8 +29,8 @@ P2/SPIN2:
 |-----------|----------|------------------------|--------------|-----------------------|
 | P1        | SPIN1    | FlexSpin (6.9.4)       | Bytecode     | OK                    |
 | P1        | SPIN1    | FlexSpin (6.9.4)       | Native/PASM  | OK                    |
-| P2        | SPIN2    | FlexSpin (6.9.4)       | NuCode       | Not yet implemented   |
-| P2        | SPIN2    | FlexSpin (6.9.4)       | Native/PASM2 | Not yet implemented   |
+| P2        | SPIN2    | FlexSpin (6.9.4)       | NuCode       | Untested              |
+| P2        | SPIN2    | FlexSpin (6.9.4)       | Native/PASM2 | Untested              |
 
 (other versions or toolchains not listed are __not supported__, and _may or may not_ work)
 
