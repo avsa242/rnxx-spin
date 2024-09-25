@@ -1,63 +1,60 @@
 {
-    --------------------------------------------
-    Filename: RNXX-Demo.spin
-    Description: Test of the RNxx Bluetooth driver
-    Author: Jesse Burt
-    Copyright (c) 2023
-    Started Jan 30, 2023
-    Updated Jan 30, 2023
-    See end of file for terms of use.
-    --------------------------------------------
+----------------------------------------------------------------------------------------------------
+    Filename:       RNXX-Demo.spin
+    Description:    Demo of the RNxx Bluetooth driver
+    Author:         Jesse Burt
+    Started:        Jan 30, 2023
+    Updated:        Sep 25, 2024
+    Copyright (c) 2024 - See end of file for terms of use.
+----------------------------------------------------------------------------------------------------
 }
 
 CON
 
-' -- User-modifiable constants
-    SER_BAUD    = 115_200
+    _clkmode    = xtal1+pll16x
+    _xinfreq    = 5_000_000
 
-    BT_TX_PIN   = 1
-    BT_RX_PIN   = 0
-    RESET_PIN   = 2
-    BT_BAUD     = 9600
-' --
 
 OBJ
 
-    ser:    "com.serial.terminal.ansi"
     time:   "time"
-    bt:     "wireless.bluetooth.rnxx"
+    ser:    "com.serial.terminal.ansi" | SER_BAUD=115_200
+    bt:     "wireless.bluetooth.rnxx" | RX_PIN=0, TX_PIN=1, RST=2, SER_BAUD=9600
+
 
 PUB main() | in_ch, out_ch
 
     setup()
-    bt.command_mode()
+    bt.command_mode()                           ' start "offline" (in command mode)
     repeat
         repeat until bt.is_connected()
         ser.strln(@"CONNECT")
-        bt.data_mode()
+        bt.data_mode()                          ' go "online" (transmit/receive data)
         repeat
-            in_ch := bt.rx_check()
-            if (in_ch > -1)
+            in_ch := bt.getchar_noblock()
+            if ( in_ch > -1 )
                 ser.putchar(in_ch)
-            out_ch := ser.rx_check()
-            if (out_ch > -1)
+            out_ch := ser.getchar_noblock()
+            if ( out_ch > -1 )
                 bt.putchar(out_ch)
+
 
 PUB setup()
 
-    ser.start(SER_BAUD)
+    ser.start()
     time.msleep(30)
     ser.clear()
 
-    if ( bt.startx(BT_RX_PIN, BT_TX_PIN, BT_BAUD, RESET_PIN) )
+    if ( bt.start() )
         ser.strln(@"RNXX driver started")
     else
         ser.strln(@"RNXX driver failed to start - halting")
         repeat
 
+
 DAT
 {
-Copyright 2023 Jesse Burt
+Copyright 2024 Jesse Burt
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
 associated documentation files (the "Software"), to deal in the Software without restriction,
